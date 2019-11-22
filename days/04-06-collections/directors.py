@@ -5,7 +5,13 @@ from urllib.request import urlretrieve
 
 movie_data = 'https://raw.githubusercontent.com/pybites/challenges/solutions/13/movie_metadata.csv'
 movies_csv = 'movies.csv'
-urlretrieve(movie_data, movies_csv)
+# urlretrieve(movie_data, movies_csv)
+
+NUM_TOP_DIRECTORS = 20
+MIN_MOVIES = 4
+MIN_YEAR = 1960
+
+Movie = namedtuple('Movie', 'title year score')
 
 
 
@@ -32,30 +38,27 @@ directors = get_movies_by_director()
 
 cnt = Counter()
 for director, movies in directors.items():
+    print(director)
     cnt[director] += len(movies)
 
 cnt.most_common(5)
 
-NUM_TOP_DIRECTORS = 20
-MIN_MOVIES = 4
-MIN_YEAR = 1960
-
-Movie = namedtuple('Movie', 'title year score')
-
 # Still having issues with this portion
 def get_average_scores(directors):
     '''Filter directors with < MIN_MOVIES and calculate averge score'''
-    cnt = Counter()
-    
+    directors_new = defaultdict(list)
     for director, movies in directors.items():
-        filt_movies = []
-        for t in movies:
-            if t.year >= 1960:
-                filt_movies
-        if len(movies) >= MIN_MOVIES:
-            cnt[director] += len(movies)
+        # print(directors[director])
+        for m in range(len(movies)):
+            # print(movies[m].year)
+            if movies[m].year >= MIN_YEAR and len(movies) >= MIN_MOVIES:
+                directors_new[director].append(movies[m])
+    
+    for director, movies in directors_new.items():
+        directors_new[director].append(_calc_mean(movies))
 
-    pass
+    
+    return directors_new
 
 # This is finished
 def _calc_mean(movies):
@@ -75,6 +78,7 @@ def print_results(directors):
     fmt_director_entry = '{counter}. {director:<52} {avg}'
     fmt_movie_entry = '{year}] {title:<50} {score}'
     sep_line = '-' * 60
+    print()
 
 
 def main():
