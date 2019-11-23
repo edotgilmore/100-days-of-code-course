@@ -46,38 +46,51 @@ cnt.most_common(5)
 # Still having issues with this portion
 def get_average_scores(directors):
     '''Filter directors with < MIN_MOVIES and calculate averge score'''
-    directors_new = defaultdict(list)
+    directors_new = {}
     for director, movies in directors.items():
-        # print(directors[director])
-        for m in range(len(movies)):
-            # print(movies[m].year)
-            if movies[m].year >= MIN_YEAR and len(movies) >= MIN_MOVIES:
-                directors_new[director].append(movies[m])
-    
-    for director, movies in directors_new.items():
-        directors_new[director].append(_calc_mean(movies))
+        if len(movies) >= MIN_MOVIES:
+            directors_new[(director, _calc_mean(movies))]=movies
+        #     # print(directors[director])
+        #     for m in range(len(movies)):
+        #         # print(movies[m].year)
+        #         if movies[m].year >= MIN_YEAR and len(movies) >= MIN_MOVIES:
+        #             directors_new[director].append(movies[m]) 
+        # for director, movies in directors_new.items():
+        #     directors_new[director].append(_calc_mean(movies))
 
-    
     return directors_new
 
 # This is finished
 def _calc_mean(movies):
     '''Helper method to calculate mean of list of Movie namedtuples'''
-    total_score = 0
-    for _ in movies:
-        total_score += _.score
+    '''Helper method to calculate mean of list of Movie namedtuples'''
+    scores = [float(movie.score) for movie in movies]
 
-    mean_score = total_score/len(movies)
-    return round(mean_score,1)
+    return round(sum(scores)/len(scores),1)
+    # total_score = 0
+    # for _ in movies:
+    #     total_score += _.score
+
+    # mean_score = total_score/len(movies)
+    # return round(mean_score,1)
 
 
-def print_results(directors):
+def print_results(directors_new):
     '''Print directors ordered by highest average rating. For each director
     print his/her movies also ordered by highest rated movie.
     See http://pybit.es/codechallenge13.html for example output'''
     fmt_director_entry = '{counter}. {director:<52} {avg}'
     fmt_movie_entry = '{year}] {title:<50} {score}'
     sep_line = '-' * 60
+
+    directors_sorted_list = sorted(directors_new.items(), key=lambda k_v: (float(k_v[0][1]), k_v[0][0]), reverse=True)[:NUM_TOP_DIRECTORS]
+    for _, (director, movies) in enumerate(directors_sorted_list):
+       print(' ')
+       print(fmt_director_entry.format(counter=_+1, director=director[0], avg=director[1]))
+       print(sep_line)
+       for movie in movies:
+           print(fmt_movie_entry.format(year=movie.year, title=movie.title, score=movie.score))
+
     print()
 
 
