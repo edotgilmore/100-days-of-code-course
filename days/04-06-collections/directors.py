@@ -46,18 +46,17 @@ cnt.most_common(5)
 # Still having issues with this portion
 def get_average_scores(directors):
     '''Filter directors with < MIN_MOVIES and calculate averge score'''
-    directors_new = {}
+    directors_new = {}  
     for director, movies in directors.items():
+        _ = []     
         if len(movies) >= MIN_MOVIES:
-            directors_new[(director, _calc_mean(movies))]=movies
-        #     # print(directors[director])
-        #     for m in range(len(movies)):
-        #         # print(movies[m].year)
-        #         if movies[m].year >= MIN_YEAR and len(movies) >= MIN_MOVIES:
-        #             directors_new[director].append(movies[m]) 
-        # for director, movies in directors_new.items():
-        #     directors_new[director].append(_calc_mean(movies))
+            for m in range(len(movies)):
+                if movies[m].year >= MIN_YEAR:
+                    _.append(movies[m])
+            _ = sorted(_, key=lambda x: x.score, reverse=True)
 
+        if len(_) > 0:
+            directors_new[(director, _calc_mean(_))]=_
     return directors_new
 
 # This is finished
@@ -65,14 +64,8 @@ def _calc_mean(movies):
     '''Helper method to calculate mean of list of Movie namedtuples'''
     '''Helper method to calculate mean of list of Movie namedtuples'''
     scores = [float(movie.score) for movie in movies]
-
     return round(sum(scores)/len(scores),1)
-    # total_score = 0
-    # for _ in movies:
-    #     total_score += _.score
 
-    # mean_score = total_score/len(movies)
-    # return round(mean_score,1)
 
 
 def print_results(directors_new):
@@ -98,8 +91,8 @@ def main():
     '''This is a template, feel free to structure your code differently.
     We wrote some tests based on our solution: test_directors.py'''
     directors = get_movies_by_director()
-    directors = get_average_scores(directors)
-    print_results(directors)
+    directors2 = get_average_scores(directors)
+    print_results(directors2)
 
 
 if __name__ == '__main__':
