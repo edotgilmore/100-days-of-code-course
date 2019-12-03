@@ -33,33 +33,55 @@ NOT_FOUND = 'N/A'
 
 
 def get_every_nth_state(states=states, n=10):
-    """Return a list with every nth item (default argument n=10, so every
+   """Return a list with every nth item (default argument n=10, so every
        10th item) of the states list above (remember: lists keep order)"""
-    pass
+   counter = 0
+   n_state = []
+   for item in states:
+      counter += 1
+      if counter == n:
+        n_state.append(item)
+        counter = 0
+   return n_state
 
 
 def get_state_abbrev(state_name, us_state_abbrev=us_state_abbrev):
-    """Look up a state abbreviation by querying the us_state_abbrev
+   """Look up a state abbreviation by querying the us_state_abbrev
        dict by full state name, for instance 'Alabama' returns 'AL',
        'Illinois' returns 'IL'.
        If the state is not in the dict, return 'N/A' which we stored
        in the NOT_FOUND constant (takeaway: dicts are great for lookups)"""
-    pass
+   abbv = us_state_abbrev.get(state_name)
+   if abbv is None:
+      abbv = NOT_FOUND
+   return abbv
 
 
 def get_longest_state(data):
-    """Receives data, which can be the us_state_abbrev dict or the states
-       list (see above). It returns the longest state measured by the length
-       of the string"""
-    pass
+   """Receives data, which can be the us_state_abbrev dict or the states
+      list (see above). It returns the longest state measured by the length
+      of the string"""
+   if type(data) is list:
+      sorted_list = sorted(data, key=len, reverse=True)
+
+   elif type(data) is dict:
+      sorted_list = sorted(list(data.keys()), key=len, reverse=True)
+   
+   longest_item = sorted_list[0]
+   return longest_item
 
 
 def combine_state_names_and_abbreviations(us_state_abbrev=us_state_abbrev,
                                           states=states):
-    """Get the first 10 state abbreviations ('AL', 'AK', 'AZ', ...) from
-       the us_state_abbrev dict, and the last 10 states from the states
-       list (see above) and combine them into a new list. The resulting list
-       has both sorted, so:
-       ['AK', 'AL', 'AZ', ..., 'South Dakota', 'Tennessee', 'Texas', ...]
-       (see also test_combine_state_names_and_abbreviations)"""
-    pass
+   """Get the first 10 state abbreviations ('AL', 'AK', 'AZ', ...) from
+      the us_state_abbrev dict, and the last 10 states from the states
+      list (see above) and combine them into a new list. The resulting list
+      has both sorted, so:
+      ['AK', 'AL', 'AZ', ..., 'South Dakota', 'Tennessee', 'Texas', ...]
+      (see also test_combine_state_names_and_abbreviations)"""
+   sorted_states = sorted(states)
+   sorted_state_abbv = sorted(list(us_state_abbrev.values()))
+
+   combo = sorted_state_abbv[:10]
+   combo.extend(sorted_states[-10:])
+   return combo
