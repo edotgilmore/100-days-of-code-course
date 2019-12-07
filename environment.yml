@@ -1,0 +1,11 @@
+name: 100DayChallenge
+channels:
+  - defaults
+dependencies:
+  - pytest
+  - black
+  - pandas
+  - pytest-cov
+  - flask
+prefix: C:\Users\Evan\Anaconda3\envs\100DayChallenge
+
