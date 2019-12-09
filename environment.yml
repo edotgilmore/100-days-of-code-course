@@ -2,10 +2,11 @@ name: 100DayChallenge
 channels:
   - defaults
 dependencies:
-  - pytest
-  - black
-  - pandas
   - pytest-cov
+  - black
+  - pytest
+  - pandas
   - flask
-prefix: C:\Users\Evan\Anaconda3\envs\100DayChallenge
+  - jupyter
+prefix: /Users/evangilmore/anaconda/envs/100DayChallenge
 
